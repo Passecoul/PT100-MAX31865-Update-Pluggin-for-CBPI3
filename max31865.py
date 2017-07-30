@@ -40,8 +40,8 @@ class max31865(object):
 		self.mosiPin = mosiPin
 		self.clkPin = clkPin
 		self.RefRest = RefRest
-		Self.ConfigReg = ConfigReg
-		Self.ConfigRegConv = ConfigRegConv
+		self.ConfigReg = ConfigReg
+		self.ConfigRegConv = ConfigRegConv
 		self.setupGPIO()
 		
 			
@@ -79,10 +79,10 @@ class max31865(object):
 		# 0b11000010 = 0xC2     (Continuous auto conversion, 2 or 4 wires at 60 Hz) 
 		#
 
-                if (Self.ConfigReg == "0xB2"): Self.ConfigRegConv =(0xB2)
+                if (self.ConfigReg == "0xB2"): self.ConfigRegConv =(0xB2)
 
 		#one shot
-		self.writeRegister(0, Self.ConfigRegConv)
+		self.writeRegister(0, self.ConfigRegConv)
 
 		# conversion time is less than 100ms
 		time.sleep(.1) #give it 100ms for conversion
