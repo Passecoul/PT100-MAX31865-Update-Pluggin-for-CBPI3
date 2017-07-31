@@ -36,7 +36,9 @@ class PT100(SensorPassive):
     def init(self):
 
         # INIT SENSOR
-        self.max = max31865.max31865(int(self.csPin),int(self.misoPin), int(self.mosiPin), int(self.clkPin), int(self.RefRest))
+        print "Initialise MAX31865"
+        print hex(int(self.ConfigReg,16))
+        self.max = max31865.max31865(int(self.csPin),int(self.misoPin), int(self.mosiPin), int(self.clkPin), int(self.RefRest), int(self.ConfigReg,16))
 
     def read(self):
 
