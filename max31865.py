@@ -34,14 +34,13 @@ class max31865(object):
 	   3rd and 4th degree parts of the polynomial) and the straight line approx.
 	   temperature is calculated with the quadratic formula one being the most accurate.
 	"""
-	def __init__(self, csPin, misoPin, mosiPin, clkPin, RefRest, ConfigReg, ConfigRegConv):
+	def __init__(self, csPin, misoPin, mosiPin, clkPin, RefRest, ConfigReg):
 		self.csPin = csPin
 		self.misoPin = misoPin
 		self.mosiPin = mosiPin
 		self.clkPin = clkPin
 		self.RefRest = RefRest
 		self.ConfigReg = ConfigReg
-		self.ConfigRegConv = ConfigRegConv
 		self.setupGPIO()
 		
 			
@@ -79,10 +78,9 @@ class max31865(object):
 		# 0b11000010 = 0xC2     (Continuous auto conversion, 2 or 4 wires at 60 Hz) 
 		#
 
-                if (self.ConfigReg == "0xB2"): self.ConfigRegConv =(0xB2)
 
 		#one shot
-		self.writeRegister(0, self.ConfigRegConv)
+		self.writeRegister(0, self.ConfigReg)
 
 		# conversion time is less than 100ms
 		time.sleep(.1) #give it 100ms for conversion
@@ -221,6 +219,9 @@ if __name__ == "__main__":
 	misoPin = 9
 	mosiPin = 10
 	clkPin = 11
-	max = max31865.max31865(csPin,misoPin,mosiPin,clkPin)
+	refRest = 430
+	configReg = "0xB2"
+	
+	max = max31865.max31865(csPin,misoPin,mosiPin,clkPin,refRest,int(configReg,16))
 	tempC = max.readTemp()
 	GPIO.cleanup()
