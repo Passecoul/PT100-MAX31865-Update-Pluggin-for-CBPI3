@@ -12,7 +12,7 @@ class PT100(SensorPassive):
     misoPin = 9
     mosiPin = 10
     clkPin = 11
-    ConfigReg = Property.Select("Conversion Mode & Wires", options=["0xB2"], description="0xB2 (Manual conversion, 3 wires at 60Hz); 0xA2(Manual conversion, 2 or 4 wires at 60Hz); 0xD2(Continuous auto conversion, 3 wires at 60 Hz); 0xC2(Continuous auto conversion, 2 or 4 wires at 60 Hz)")
+    ConfigText = Property.Select("Conversion Mode & Wires", options=["[0xB2] Manual conversion, 3 wire @60Hz","[0xA2] Manual conversion, 2/4 wire @60Hz","[0xD2] Continuous (auto) conversion, 3 wire @60Hz","[0xC2] Continuous auto conversion, 2/4 wires @60Hz"], description="Select sensor conversion type")
 
 		#
 		# Config Register
@@ -36,7 +36,10 @@ class PT100(SensorPassive):
     def init(self):
 
         # INIT SENSOR
-        self.max = max31865.max31865(int(self.csPin),int(self.misoPin), int(self.mosiPin), int(self.clkPin), int(self.RefRest))
+	self.ConfigReg = self.ConfigText[1:5]
+        print "Initialise MAX31865 at address"
+        print hex(int(self.ConfigReg,16))
+        self.max = max31865.max31865(int(self.csPin),int(self.misoPin), int(self.mosiPin), int(self.clkPin), int(self.RefRest), int(self.ConfigReg,16))
 
     def read(self):
 
